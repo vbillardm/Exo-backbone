@@ -4,40 +4,112 @@
     <meta charset="UTF-8">
     <title>Exercice BackBone</title>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js">
-    </script>
-    <!-- Templates -->
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
 
 </head>
 <body>
-  <ul id="">
+  <script type="text/template" id="joueur-template">
+      <li>
+          <a href='contact.php?id=<%= id %>'>
+              <%= id %> <%= poste %> <%= nom %>
+          </a>
+      </li>
+  </script>
 
-  </ul>
 <script>
     (function ()
     {
+      /* Joueur { id:1, nom:"Karabatic", poste:"demi-centre" }  */
+      var JoueurModel = Backbone.Model.extend
+      (
+          {
+              defaults :
+              {
+                  nom: "",
+                  poste: "demi-centre"
+              }
+          }
+      );
+
+      /* ContactCollection [ new Contact(), new Contact() ]  */
+      var JoueurCollection = Backbone.Collection.extend
+      (
+         {
+              model : JoueurModel
+         }
+      );
+      // Vues
+      var JoueurView = Backbone.View.extend
+      (
+         {
+             tagName : "li"
+         }
+      );
+
+      var JoueurListView = Backbone.View.extend
+      (
+         {
+             collection : null,
+             template : _.template( $( "#joueur-template" ).html() ),
+             initialize : function()
+             {
+                 this.listenTo( this.collection, "add", this.render );
+                 this.render();
+             }
+             ,render : function()
+             {
+                 var self = this;
+                 this.$el.empty();
+                 this.collection.each
+                 (
+                     function( joueur )
+                     {
+                          self.$el.append
+                          (
+                              self.template( joueur.toJSON() )
+                          )
+                          console.log(joueur.toJSON());
+                     }
+                 );
+             }
+         }
+      );
+
+
+
       var joueurs;
 
       $(function(){
 
-        var main = function()
-        {
-          joueurs =
-          [
-            {id:1, nom:"Karabatic", poste: "demi-centre" }
-            {id:1, nom:"Abalo", poste: "ailier"},
-            {id:1, nom:"hansen", poste: "demi-centre" },
-            {id:1, nom:"Karabatic", poste: "demi-centre" },
-            {id:1, nom:"Karabatic", poste: "demi-centre" }
-          ]
+          var main = function()
+          {
+
+            joueurs = new JoueurCollection();
 
 
+            // Renseigne les éléments de la liste
+            var joueurListView = new JoueurListView
+            (
+                 {
+                     el          : "#joueur_list"
+                     , collection: joueurs
+                 }
+            );
 
-        }
+
+          joueurs.add( new JoueurModel( { id:1, nom:"Abalo", poste:"Ailier" } ) );
+          joueurs.add( new JoueurModel( { id:2, nom:"Karabatic", poste:"demi-centre" } ) );
+          joueurs.add( new JoueurModel( { id:3, nom:"Walid", poste:"ailier" } ) );
+          joueurs.add( new JoueurModel( { id:4, nom:"Demaltay", poste:"arrière gauche" } ) );
+
+
+        };
+        main();
       })
     })();
 </script>
+
 </body>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </html>
