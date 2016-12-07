@@ -20,7 +20,7 @@ var mb = mb || {};
             },
             events:
             {
-                "click a": "linkClicked"
+                //"click a": "linkClicked"
 
             },
             render : function()
@@ -29,39 +29,7 @@ var mb = mb || {};
               return this;
             },
 
-            linkClicked : function( event )
-            {
-                var joueurRef = this;
-                this.$el
-                    .append( "<input type='text' placeholder='Modifier la valeur du nom' value='"+ this.$el.children( "a" ).text().trim() +"' />" )
-                    .children( "input" )
-                        .focus()
-                        .change
-                        (
-                            function()
-                            {
-                                var newjoueur = $(this).val().split( "-" );
-                                // Vérification des données saisies
-                                if( newjoueur.length < 2 )
-                                {
-                                    joueurRef.render();
-                                    return;
-                                }
-                                // Modification des valeurs du Model associé
-                                joueurRef.model.set
-                                (
-                                    {
-                                        "poste"  : newjoueur[ 0 ],
-                                        "nom"    : newjoueur[ 1 ]
-                                    }
-                                );
-                            }
-                        )
-                        .end()
-                    .children( "a" )
-                        .hide( "slow" );
-                return false;
-            }
+
         }
     );
     mb.views.JoueurListView = Backbone.View.extend

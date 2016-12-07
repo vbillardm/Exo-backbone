@@ -7,9 +7,10 @@ var mb = mb || {};
   mb.models.JoueurModel = Backbone.Model.extend
   (
       {
-          defaults :
+           urlRoot: "api/setJoueurs.php"
+          ,defaults :
           {
-              nom: "",
+              nom: "wazzzzza",
               poste: "demi-centre"
           }
       }

@@ -5,15 +5,23 @@ var mb = mb || {};
 
     $(function(){
       mb.router = mb.router || {};
+      var joueursCollection;
+
       mb.router.AppRouter = Backbone.Router.extend
       (
           {
               routes:
               {
-                  "" : "mainInit"
+                  "" : "mainInit",
+                  "joueur/:id" : "changeJoueur"
               },
               mainInit : function()
               {
+                $( "#changeJoueur").hide( "slow" );
+                $( "#joueur_list").show( "slow" );
+
+                if(!joueursCollection)
+                {
                   var joueursCollection = new mb.models.JoueurCollection();
 
                   // Renseigne les éléments de la liste
@@ -30,6 +38,43 @@ var mb = mb || {};
                           }
                       }
                   );
+                }
+              },
+              changeJoueur : function( id )
+              {
+                  $( "#joueur_list").hide( "slow" );
+                  $( "#changeJoueur").show( "slow" );
+
+                  var self = this
+                   ,model = joueursCollection.get( "id" )
+                  ,poste = model.get( "poste" )
+                  ,nom = model.get( "nom" );
+
+                  $( "#joueurPoste").val( poste );
+                  $( "#joueurNom").val( nom );
+                  $( "#joueurChangeButton").click
+                  (
+                      function()
+                      {
+                          var newPoste= $( "#joueurPoste").val(),
+                              newNom = $( "#joueurNom").val();
+                          if( newPoste !== poste || newNom !== nom )
+                          {
+                              model.set
+                              (
+                                  {
+                                      poste  : newPoste,
+                                      nom     : newNom
+                                  }
+                              );
+
+              // Synchronisation avec le serveur
+                              model.save();
+                          }
+                          // Active la route par défaut
+                          self.navigate( "", {trigger: true} );
+                      }
+                  )
               }
           }
       );

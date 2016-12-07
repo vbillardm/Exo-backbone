@@ -12,7 +12,7 @@
 <body>
   <script type="text/template" id="joueur-template">
       <li>
-          <a href='contact.php?id=<%= id %>'>
+          <a href='#joueur/<%= id %>'>
               <%= id %> <%= poste %> <%= nom %>
           </a>
       </li>
@@ -24,5 +24,10 @@
 
   <ul id="joueur_list">
   </ul>
+  <div id="changeJoueur" >
+      <input id="joueurPoste" type="text" />
+      <input id="JoueurNom" type="text" />
+      <input id="joueurChangeButton" type="button" value="valider" />
+  </div>
 </body>
 </html>
