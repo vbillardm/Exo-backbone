@@ -21,6 +21,7 @@ var mb = mb || {};
             events:
             {
                 "click a": "linkClicked"
+
             },
             render : function()
             {
@@ -39,7 +40,7 @@ var mb = mb || {};
                         (
                             function()
                             {
-                                var newjoueur = $(this).val().split( " " );
+                                var newjoueur = $(this).val().split( "-" );
                                 // Vérification des données saisies
                                 if( newjoueur.length < 2 )
                                 {
