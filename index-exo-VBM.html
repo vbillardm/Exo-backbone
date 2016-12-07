@@ -17,99 +17,12 @@
           </a>
       </li>
   </script>
+  <script src="mb/model/joueur.js" ></script>
+  <script src="mb/view/joueur.js" ></script>
 
-<script>
-    (function ()
-    {
-      /* Joueur { id:1, nom:"Karabatic", poste:"demi-centre" }  */
-      var JoueurModel = Backbone.Model.extend
-      (
-          {
-              defaults :
-              {
-                  nom: "",
-                  poste: "demi-centre"
-              }
-          }
-      );
+  <script src="main.js"></script>
 
-      /* ContactCollection [ new Contact(), new Contact() ]  */
-      var JoueurCollection = Backbone.Collection.extend
-      (
-         {
-              model : JoueurModel
-         }
-      );
-      // Vues
-      var JoueurView = Backbone.View.extend
-      (
-         {
-             tagName : "li"
-         }
-      );
-
-      var JoueurListView = Backbone.View.extend
-      (
-         {
-             collection : null,
-             template : _.template( $( "#joueur-template" ).html() ),
-             initialize : function()
-             {
-                 this.listenTo( this.collection, "add", this.render );
-                 this.render();
-             }
-             ,render : function()
-             {
-                 var self = this;
-                 this.$el.empty();
-                 this.collection.each
-                 (
-                     function( joueur )
-                     {
-                          self.$el.append
-                          (
-                              self.template( joueur.toJSON() )
-                          )
-                          console.log(joueur.toJSON());
-                     }
-                 );
-             }
-         }
-      );
-
-
-
-      var joueurs;
-
-      $(function(){
-
-          var main = function()
-          {
-
-            joueurs = new JoueurCollection();
-
-
-            // Renseigne les éléments de la liste
-            var joueurListView = new JoueurListView
-            (
-                 {
-                     el          : "#joueur_list"
-                     , collection: joueurs
-                 }
-            );
-
-
-          joueurs.add( new JoueurModel( { id:1, nom:"Abalo", poste:"Ailier" } ) );
-          joueurs.add( new JoueurModel( { id:2, nom:"Karabatic", poste:"demi-centre" } ) );
-          joueurs.add( new JoueurModel( { id:3, nom:"Walid", poste:"ailier" } ) );
-          joueurs.add( new JoueurModel( { id:4, nom:"Demaltay", poste:"arrière gauche" } ) );
-
-
-        };
-        main();
-      })
-    })();
-</script>
-
+  <ul id="joueur_list">
+  </ul>
 </body>
 </html>
